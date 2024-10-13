@@ -1,3 +1,5 @@
+# Define how to orchestrate multiple containers for project
+
 services:
   db:
     image: postgres:13

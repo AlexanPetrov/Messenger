@@ -1,3 +1,5 @@
+# Define how to build & run container image (application in container)
+
 # Official Python image from Docker Hub
 FROM python:3.11-slim
 

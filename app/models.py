@@ -1,3 +1,6 @@
+# Define tables
+# SQLAlchemy uses this model to map classes (User) to tables (users) in db
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 

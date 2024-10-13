@@ -1,3 +1,5 @@
+# Defines the business logic
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from app.models import User

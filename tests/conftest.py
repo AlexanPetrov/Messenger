@@ -1,3 +1,7 @@
+# Automatically discovered by pytest and allows to define common fixtures,
+# hooks, and shared test utilities without having to explicitly import them 
+# into every test file
+
 import pytest
 import httpx
 from app.main import app

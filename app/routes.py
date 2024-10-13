@@ -1,11 +1,11 @@
+# Endpoints for application
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services import check_db_connection, get_root_message, create_user
 from app.schemas import CreateUserSchema, UserResponseSchema
 from app.database import async_session
-from httpx import AsyncClient
-import pytest
-import uuid
+
 
 router = APIRouter()
 
@@ -26,18 +26,3 @@ def read_root():
 @router.post("/users/", response_model=UserResponseSchema, status_code=201)
 async def create_user_route(user: CreateUserSchema, db: AsyncSession = Depends(get_db)):
     return await create_user(db, user)
-
-@pytest.mark.asyncio
-async def test_create_user(client: AsyncClient):
-    unique_email = f"testuser_{uuid.uuid4()}@example.com"
-    test_user = {
-        "username": "testuser",
-        "email": unique_email
-    }
-
-    response = await client.post("/users/", json=test_user)
-
-    assert response.status_code == 201
-    data = response.json()
-    assert data["username"] == "testuser"
-    assert data["email"] == unique_email

@@ -1,3 +1,6 @@
+# Bridge between Alembic & project,
+# setting up the environment for running migrations
+
 import asyncio
 from logging.config import fileConfig
 from sqlalchemy import pool

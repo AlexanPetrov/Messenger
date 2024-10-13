@@ -1,3 +1,5 @@
+# Define data validation and serialization using Pydantic
+
 from pydantic import BaseModel
 
 # Validate user data during creation.

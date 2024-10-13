@@ -10,10 +10,10 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise EnvironmentError("DATABASE_URL environment variable is not set in the .env file.")
 
-# Create the asynchronous engine
+# Manage db connections & execute SQL queries asynchronously with SQLAlchemy
 engine = create_async_engine(DATABASE_URL, echo=True)
 
-# Create a session factory with the engine and session settings
+# Interact w/ db asynchronously (e.g., to perform CRUD operations)
 async_session = sessionmaker(
     bind=engine,
     class_=AsyncSession,
