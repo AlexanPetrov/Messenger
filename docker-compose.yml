@@ -10,6 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - messenger-network
 
   web:
     build: .
@@ -23,17 +25,45 @@ services:
       - .env
     volumes:
       - .:/app
+    networks:
+      - messenger-network
+
+  alembic:
+    build:
+      context: .
+    container_name: messenger-alembic
+    command: alembic upgrade head
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app
+    volumes:
+      - .:/app
+    working_dir: /app
+    networks:
+      - messenger-network
 
   test:
-    build: .
+    build:
+      context: .
     container_name: messenger-test
-    command: pytest
+    command: pytest --cov=app --cov-report=term-missing
     depends_on:
       - db
     env_file:
       - .env
     volumes:
       - .:/app
+    environment:
+      PYTHONPATH: /app
+    networks:
+      - messenger-network
 
 volumes:
   postgres_data:
+
+networks:
+  messenger-network:
+    driver: bridge
