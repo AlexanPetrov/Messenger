@@ -1,11 +1,9 @@
-# Endpoints for application
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services import check_db_connection, get_root_message, create_user
 from app.schemas import CreateUserSchema, UserResponseSchema
 from app.database import async_session
-
+from middleware.rate_limiter import limiter
 
 router = APIRouter()
 
@@ -23,6 +21,8 @@ async def test_db(db: AsyncSession = Depends(get_db)):
 def read_root():
     return get_root_message()
 
+# Rate-limited route for user creation (5 requests per minute)
 @router.post("/users/", response_model=UserResponseSchema, status_code=201)
-async def create_user_route(user: CreateUserSchema, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def create_user_route(request: Request, user: CreateUserSchema, db: AsyncSession = Depends(get_db)):
     return await create_user(db, user)

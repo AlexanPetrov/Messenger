@@ -43,5 +43,7 @@ def event_loop():
 @pytest.fixture(autouse=True)
 async def clean_database():
     async with session_factory() as session:
-        await session.execute(text("TRUNCATE TABLE users RESTART IDENTITY CASCADE"))
+        await session.execute(
+            text("DELETE FROM users WHERE email LIKE 'testuser_%'")
+        )
         await session.commit()
